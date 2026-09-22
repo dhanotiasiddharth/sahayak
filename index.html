@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1D4E89">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>Sahayak</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#E9EDF1;--paper:#fff;--ink:#16232E;--ink-2:#4A5A68;--line:#CBD3DB;--ledger:#1D4E89;--ledger-soft:#DCE7F5;--ok:#1F7A46;--ok-soft:#DDF1E4;--warn:#B9520E;--warn-soft:#FCE8DA;--wa:#128C4A;--r:10px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F161D;--paper:#18222B;--ink:#EEF2F5;--ink-2:#9FB0BE;--line:#2C3944;--ledger:#7FB0EE;--ledger-soft:#1B3050;--ok:#5FCB8B;--ok-soft:#173523;--warn:#F0A06A;--warn-soft:#3D2414;--wa:#4CD27F}}
+  *,*::before,*::after{box-sizing:inherit}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Devanagari",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+  .app{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+  header{padding:18px 20px 10px;display:flex;align-items:baseline;justify-content:space-between}
+  header h1{margin:0;font-size:20px;font-weight:700}
+  header .who{font-size:13px;color:var(--ink-2)}
+  nav{display:flex;gap:6px;padding:0 20px 12px}
+  nav button{flex:1;border:1px solid var(--line);background:var(--paper);color:var(--ink-2);font:inherit;font-weight:600;font-size:14px;padding:9px 0;border-radius:var(--r)}
+  nav button[aria-selected="true"]{background:var(--ledger);border-color:var(--ledger);color:#fff}
+  main{padding:0 20px 28px;flex:1}
+  section[hidden],[hidden]{display:none!important}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .card+.card{margin-top:12px}
+  h2{font-size:15px;font-weight:600;margin:0 0 8px}
+  p{margin:0 0 8px}
+  .muted{color:var(--ink-2);font-size:14px}
+  .talk{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 0 8px}
+  .mic{width:120px;height:120px;border-radius:50%;border:none;background:var(--ledger);color:#fff;font:inherit;font-weight:600;font-size:15px;box-shadow:0 8px 24px rgba(29,78,137,.25);display:flex;align-items:center;justify-content:center;touch-action:none;-webkit-user-select:none;user-select:none}
+  .mic.live{background:var(--warn);animation:pulse 1.2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 6px var(--warn-soft)}50%{box-shadow:0 0 0 16px var(--warn-soft)}}
+  @media (prefers-reduced-motion:reduce){.mic.live{animation:none}}
+  .lang{display:flex;gap:6px}
+  .lang button{border:1px solid var(--line);background:transparent;color:var(--ink-2);font:inherit;font-size:13px;padding:5px 10px;border-radius:999px}
+  .lang button[aria-pressed="true"]{border-color:var(--ledger);color:var(--ledger)}
+  textarea,input{width:100%;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font:inherit;font-size:16px;background:var(--paper);color:var(--ink)}
+  textarea{min-height:88px;resize:vertical}
+  .row{display:flex;gap:8px;margin-top:10px}
+  .btn{border:none;border-radius:var(--r);padding:12px 16px;font:inherit;font-weight:600;font-size:15px;background:var(--ledger);color:#fff;flex:1}
+  .btn.quiet{background:var(--ledger-soft);color:var(--ledger)}
+  .btn.ok{background:var(--ok);color:#fff}.btn.wa{background:var(--wa);color:#fff}
+  .btn:disabled{opacity:.5}
+  dl{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin:0;font-size:15px}dt{color:var(--ink-2)}dd{margin:0;font-weight:500}
+  table{width:100%;border-collapse:collapse;font-size:15px;margin:4px 0 8px}th,td{text-align:left;padding:6px 0;border-bottom:1px solid var(--line)}th{font-weight:500;color:var(--ink-2);font-size:13px}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .flag{display:inline-block;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:2px 8px;font-size:13px;font-weight:600}
+  .stamp{display:inline-block;background:var(--ok-soft);color:var(--ok);border-radius:6px;padding:2px 8px;font-size:13px;font-weight:600}
+  .confirm-q{font-size:16px;font-weight:600;margin:12px 0 4px}
+  .thinking{color:var(--ink-2);font-size:14px;display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:50%;background:var(--ledger);animation:blink 1s infinite}@keyframes blink{50%{opacity:.2}}
+  .sys{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);gap:10px}.sys+.sys{margin-top:10px}.sys b{font-weight:600}.sys small{display:block;color:var(--ink-2);font-size:13px;margin-top:2px}
+  .bubble{background:var(--ok-soft);border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:15px;white-space:pre-wrap;margin:6px 0 10px}
+  .err{color:var(--warn);font-size:14px}
+  .answer{font-size:17px;font-weight:500;margin-top:8px;white-space:pre-wrap}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}.chips button{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:14px;padding:8px 12px;border-radius:999px;text-align:left}
+  .brief{font-size:16px;white-space:pre-wrap}
+  #install{position:sticky;bottom:0;margin:0 -20px;padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+  #install span{flex:1;font-size:14px}
+  .queue{font-size:13px;color:var(--warn);margin-top:6px}
+  footer{padding:14px 20px 24px;font-size:12px;color:var(--ink-2);text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <header><h1>Sahayak</h1><span class="who" id="who"></span></header>
+
+  <section id="login">
+    <div class="card">
+      <h2>Who are you?</h2>
+      <p class="muted">Your name, as your manager knows you. This is how visits get filed under you.</p>
+      <input id="name" placeholder="Rahul Verma" autocomplete="name">
+      <div class="row"><button class="btn" id="login-go">Start</button></div>
+    </div>
+  </section>
+
+  <div id="shell" hidden>
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="capture">Log a visit</button>
+    <button role="tab" aria-selected="false" data-tab="ask">Ask</button>
+    <button role="tab" aria-selected="false" data-tab="brief">Today</button>
+  </nav>
+  <main>
+    <section id="capture">
+      <div id="cap-step1">
+        <div class="card">
+          <div class="talk">
+            <button class="mic" id="mic" aria-label="Hold to talk">Hold to talk</button>
+            <div class="lang" role="group"><button aria-pressed="true" data-lang="en-IN">English / Hinglish</button><button aria-pressed="false" data-lang="hi-IN">हिन्दी</button></div>
+            <p class="muted" id="mic-note">Talk for 30 seconds after you leave the dealer.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Or type it</h2>
+          <textarea id="transcript" placeholder="Sharma Traders visited, ordered 200 lengths of 25mm pipe, delivery Friday…"></textarea>
+          <div class="row"><button class="btn" id="extract">Log this visit</button></div>
+          <p class="queue" id="queue" hidden></p>
+          <p class="err" id="cap-err" hidden></p>
+        </div>
+      </div>
+      <div id="cap-step2" hidden>
+        <div class="card"><p class="muted">You said</p><p id="said"></p></div>
+        <div class="card">
+          <div class="thinking" id="thinking"><span class="dot"></span> Reading the visit…</div>
+          <div id="extracted" hidden>
+            <h2>Sahayak understood</h2>
+            <dl id="facts"></dl>
+            <table id="lines"><thead><tr><th>Item</th><th class="n">Qty</th><th class="n">Rate ₹</th><th class="n">Amount ₹</th></tr></thead><tbody></tbody></table>
+            <div id="issues"></div>
+            <p class="confirm-q" id="confirm-q"></p>
+            <div class="row"><button class="btn quiet" id="redo">Change</button><button class="btn ok" id="confirm">Confirm — haan</button></div>
+          </div>
+          <p class="err" id="ex-err" hidden></p>
+        </div>
+      </div>
+      <div id="cap-step3" hidden>
+        <div class="sys"><div><b id="so-title">Sales order created</b><small id="so-line"></small></div><span class="stamp" id="so-stamp">Done</span></div>
+        <div class="sys"><div><b>Visit logged</b><small id="crm-line"></small></div><span class="stamp">Done</span></div>
+        <div class="sys" id="complaint-sys" hidden><div><b>Complaint raised</b><small id="complaint-line"></small></div><span class="flag">Open</span></div>
+        <div class="sys"><div><b>Next visit</b><small id="next-line"></small></div><span class="stamp">Done</span></div>
+        <div class="card" style="margin-top:12px">
+          <h2>WhatsApp to the dealer</h2>
+          <p class="muted" id="wa-to"></p>
+          <div class="bubble" id="wa-msg"></div>
+          <div class="row"><button class="btn quiet" id="wa-skip">Don't send</button><button class="btn wa" id="wa-send">Send from company number</button></div>
+          <p id="wa-status" class="muted" hidden style="margin-top:10px"></p>
+        </div>
+        <div class="row"><button class="btn quiet" id="again">Log another visit</button></div>
+      </div>
+    </section>
+
+    <section id="ask" hidden>
+      <div class="card">
+        <h2>Ask about stock, dues, prices</h2>
+        <div class="chips" id="ask-chips"></div>
+        <textarea id="ask-q" style="min-height:64px;margin-top:10px" placeholder="Malwa Hardware ka outstanding kitna hai?"></textarea>
+        <div class="row"><button class="btn" id="ask-go">Ask</button></div>
+        <div class="thinking" id="ask-thinking" hidden><span class="dot"></span> Checking the ERP…</div>
+        <p class="answer" id="ask-a"></p>
+        <p class="err" id="ask-err" hidden></p>
+      </div>
+    </section>
+
+    <section id="brief" hidden>
+      <div class="card"><h2 id="brief-date"></h2><div class="thinking" id="brief-thinking"><span class="dot"></span> Preparing your day…</div><p class="brief" id="brief-text"></p></div>
+      <div class="card"><h2>Collect today</h2><table><tbody id="dues"></tbody></table></div>
+      <div class="card"><h2>Logged today</h2><table><tbody id="today"></tbody></table><p class="muted" id="today-empty">Nothing yet. Log your first visit.</p></div>
+    </section>
+  </main>
+  <div id="install" hidden><span>Add Sahayak to your home screen to open it like an app.</span><button class="btn" style="flex:0 0 auto" id="install-go">Install</button></div>
+  </div>
+  <footer id="foot"></footer>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
