@@ -1,0 +1,31 @@
+{
+  "name": "sahayak-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sahayak — voice-first AI field-sales assistant. Backend brain, connectors, WhatsApp.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.60.0",
+    "@fastify/cors": "^11.0.0",
+    "@fastify/static": "^10.1.4",
+    "fast-xml-parser": "^5.2.0",
+    "fastify": "^5.3.0",
+    "pg": "^8.16.0",
+    "pino": "^9.7.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.15.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}
